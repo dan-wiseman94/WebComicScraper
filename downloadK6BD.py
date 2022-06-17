@@ -5,7 +5,7 @@
 
 import requests, os, bs4
 
-url = 'https://killsixbilliondemons.com/comic/ksbd-chapter-1-1/'
+url = 'https://killsixbilliondemons.com/'
 os.makedirs('killsixbilliondemons', exist_ok=True)
 
 failed_pages = []
