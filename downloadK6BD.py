@@ -7,6 +7,7 @@ import requests, os, bs4
 
 url = 'https://killsixbilliondemons.com'
 os.makedirs('killsixbilliondemons', exist_ok=True)
+
 while not url.endswith('kill-six-billion-demons-chapter-1'):
 
     print('Downloading page %s...' % url)
@@ -23,7 +24,7 @@ while not url.endswith('kill-six-billion-demons-chapter-1'):
         # Download the image.
         print('Downloading image %s...' % (comicUrl))
         res = requests.get(comicUrl)
-        #res.raise_for_status()
+        res.raise_for_status()
 
         # Save the image to ./xkcd.
         imageFile = open(os.path.join('killsixbilliondemons', os.path.basename(comicUrl)),
