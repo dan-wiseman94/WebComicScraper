@@ -5,8 +5,11 @@
 
 import requests, os, bs4
 
-url = 'https://killsixbilliondemons.com'
+url = 'https://killsixbilliondemons.com/comic/ksbd-chapter-1-1/'
 os.makedirs('killsixbilliondemons', exist_ok=True)
+
+failed_pages = []
+
 
 while not url.endswith('kill-six-billion-demons-chapter-1'):
 
@@ -26,19 +29,33 @@ while not url.endswith('kill-six-billion-demons-chapter-1'):
         res = requests.get(comicUrl)
         res.raise_for_status()
 
-        # Save the image to ./xkcd.
-        imageFile = open(os.path.join('killsixbilliondemons', os.path.basename(comicUrl)),
-                         'wb')
-        for chunk in res.iter_content(100000):
-            imageFile.write(chunk)
-        imageFile.close()
+
+        try:
+
+            imageFile = open(os.path.join('killsixbilliondemons', os.path.basename(comicUrl)), 'wb')
+            for chunk in res.iter_content(100000):
+                imageFile.write(chunk)
+            imageFile.close()
+        except OSError:
+            print("failed to download image.")
+            failed_pages += comicUrl
+
+
 
     # Get the Prev button's url.
-    prevLink = soup.select('a[class="navi comic-nav-previous navi-prev"]')[0]
-    url =  prevLink.get('href')
+    try:
+
+        prevLink = soup.select('a[class="navi comic-nav-previous navi-prev"]')[0]
+        url =  prevLink.get('href')
+    except IndexError:
+        break
 
 
 
 
 
 print('Done.')
+if failed_pages:
+    print("There were some un-downloaded pages. URLS listed here:")
+    for page in failed_pages:
+        print(page)
