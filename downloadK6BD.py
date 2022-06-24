@@ -27,16 +27,21 @@ while not url.endswith('kill-six-billion-demons-chapter-1'):
         # Download the image.
         print('Downloading image %s...' % (comicUrl))
         res = requests.get(comicUrl)
+
         res.raise_for_status()
 
 
         try:
-
+            # untested
+            if os.path.basename.__str[0:2] == r'\\':  
+                os.path.basename == os.path.basename[1:]
+            
             imageFile = open(os.path.join('killsixbilliondemons', os.path.basename(comicUrl)), 'wb')
             for chunk in res.iter_content(100000):
                 imageFile.write(chunk)
             imageFile.close()
         except OSError:
+           
             print("failed to download image.")
             failed_pages += comicUrl
 
